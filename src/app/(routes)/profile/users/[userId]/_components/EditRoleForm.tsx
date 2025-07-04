@@ -1,0 +1,150 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { Loader, PencilIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
+
+interface UsernameFormProps {
+  initialData: {
+    role: string;
+  };
+  userId: string;
+}
+
+const formSchema = z.object({
+  role: z.string().min(2, { message: "كلمة المرور مطلوب" }),
+});
+
+const EditRoleForm = ({ initialData, userId }: UsernameFormProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const router = useRouter();
+
+  const toggleEdit = () => setIsEditing((prev) => !prev);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialData,
+  });
+  const { isSubmitting, isValid } = form.formState;
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setIsLoading(true);
+      await axios.patch(`/api/users/${userId}`, values);
+
+      setIsLoading(false);
+      toggleEdit();
+      toast.success("تم تعديل بيانات المستخدم");
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+      toast.error("حدث خطأ حاول مره اخري");
+      setIsLoading(false);
+    }
+  };
+
+  const options = [
+    {
+      id: 1,
+      value: "ADMIN",
+      label: "أدمن",
+    },
+    {
+      id: 2,
+      value: "USER",
+      label: "مستخدم عادي",
+    },
+  ];
+
+  return (
+    <div className="mt-6 border bg-slate-100/10 rounded-md p-4 space-y-5">
+      <div className="font-medium item-between">
+        صلاحية المستخدم
+        <Button variant="ghost" onClick={toggleEdit}>
+          {isEditing ? (
+            <>الغاء</>
+          ) : (
+            <>
+              <PencilIcon className="h-4 w-4 mr-2" /> تعديل
+            </>
+          )}
+        </Button>
+      </div>
+
+      {!isEditing && (
+        <p className="text-sm mt-2">
+          {initialData.role === "USER" ? "مستخدم عادي" : "ادمن"}
+        </p>
+      )}
+
+      {isEditing && (
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 mt-4"
+          >
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem className="flex flex-row text-start space-x-1 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Select
+                      dir="rtl"
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue
+                          placeholder="اختر الصلاحية..."
+                          className="outline-none"
+                        />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        {options.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <div className="flex items-center gap-x-2">
+              <Button disabled={!isValid || isSubmitting} type="submit">
+                {isLoading ? (
+                  <div className="flex items-center justify-center gap-x-2">
+                    <Loader className="animate-spin" /> حفظ
+                  </div>
+                ) : (
+                  "حفظ"
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
+    </div>
+  );
+};
+
+export default EditRoleForm;
