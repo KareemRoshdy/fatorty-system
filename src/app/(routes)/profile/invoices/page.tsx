@@ -15,7 +15,7 @@ const InvoicesPage = async () => {
   const invoices = await getAllInvoices();
 
   return (
-    <div>
+    <div className="pb-16">
       <BackLink link="/profile" name="العودة الي الملف الشخصي" />
       <DataTable columns={columns} data={invoices} />
     </div>

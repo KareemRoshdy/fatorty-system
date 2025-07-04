@@ -1,9 +1,8 @@
-import { CupSodaIcon, LogInIcon, User } from "lucide-react";
+import { CupSodaIcon, LogInIcon } from "lucide-react";
 import { ModeToggle } from "../ThemeBtnToggle";
-import { Button, buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { cn } from "@/lib/utils";
 import { UserMenu } from "../UserMenu";
 
 const Header = async () => {
@@ -32,13 +31,6 @@ const Header = async () => {
               </Button>
             </Link>
           ) : (
-            // <Link
-            //   href={"/profile"}
-            //   className={cn(buttonVariants({ variant: "outline" }))}
-            // >
-            //   {/* <User /> */}
-
-            // </Link>
             <UserMenu />
           )}
           <ModeToggle />

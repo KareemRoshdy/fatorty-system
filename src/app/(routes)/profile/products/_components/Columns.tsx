@@ -1,5 +1,6 @@
 "use client";
 
+import { Product } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, PenLine } from "lucide-react";
 
@@ -11,14 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { InvoiceWithUser } from "@/types";
 
-export const columns: ColumnDef<InvoiceWithUser>[] = [
+export const columns: ColumnDef<Product>[] = [
   {
-    accessorFn: (row) => row.user?.arabicName,
-    id: "arabicName", // لازم نحدد ID هنا علشان نقدر نفلتر
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <div className="w-fit ml-auto">
@@ -26,33 +23,31 @@ export const columns: ColumnDef<InvoiceWithUser>[] = [
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            الاسم
+            إسم المنتج
             <ArrowUpDown className="mr-2 h-4 w-4" />
           </Button>
         </div>
       );
-    },
-    cell: ({ row }) => {
-      return <div>{row.getValue("arabicName") || "—"}</div>;
     },
   },
+
   {
-    accessorKey: "totalPrice",
+    accessorKey: "price",
     header: ({ column }) => {
       return (
-        <div className="w-fit ml-auto">
+        <div className="text-right">
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            السعر
-            <ArrowUpDown className="mr-2 h-4 w-4" />
+            سعر المنتج
+            <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         </div>
       );
     },
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("totalPrice")) || "0";
+      const price = parseFloat(row.getValue("price")) || "0";
 
       const formatted = new Intl.NumberFormat("ar-EG", {
         style: "currency",
@@ -62,31 +57,7 @@ export const columns: ColumnDef<InvoiceWithUser>[] = [
       return <div>{formatted}</div>;
     },
   },
-  {
-    accessorKey: "isPaid",
-    header: ({ column }) => {
-      return (
-        <div className="w-fit ml-auto">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            تم الدفع
-            <ArrowUpDown className="mr-2 h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      const isPaid = row.getValue("isPaid") || false;
 
-      return (
-        <Badge className={cn("bg-red-500 text-white", isPaid && "bg-sky-700")}>
-          {isPaid ? "تم الدفع" : "لم يدفع"}
-        </Badge>
-      );
-    },
-  },
   {
     id: "actions",
     cell: ({ row }) => {
@@ -102,7 +73,7 @@ export const columns: ColumnDef<InvoiceWithUser>[] = [
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="center">
-            <Link href={`/admin/wallet/${id}`}>
+            <Link href={`/profile/products/${id}`}>
               <DropdownMenuItem>
                 <PenLine className="h-4 w-4 mr-2" /> تعديل
               </DropdownMenuItem>

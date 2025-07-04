@@ -65,7 +65,7 @@ model Session {
 
 model Product {
   id    String @id @default(uuid())
-  name  String
+  name  String @unique
   price Float
 
   createdAt DateTime @default(now())

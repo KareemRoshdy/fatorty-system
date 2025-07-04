@@ -23,5 +23,4 @@ export default middleware((req) => {
 
 export const config = {
   matcher: ["/login", "/profile/:path*"],
-  // matcher: [...authRoutes, ...protectedRoutes],
 };

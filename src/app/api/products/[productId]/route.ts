@@ -3,38 +3,39 @@ import { NextResponse, NextRequest } from "next/server";
 
 interface Props {
   params: {
-    userId: string;
+    productId: string;
   };
 }
 
 export async function DELETE(_: NextRequest, { params }: Props) {
-  const { userId } = await params;
+  const { productId } = await params;
+
   try {
-    const user = await prisma.user.findUnique({
+    const product = await prisma.product.findUnique({
       where: {
-        id: userId,
+        id: productId,
       },
     });
 
-    if (!user) {
+    if (!product) {
       return NextResponse.json(
-        { message: "المستخدم غير موجود بالفعل" },
+        { message: "المنتج غير موجود بالفعل" },
         { status: 404 }
       );
     }
 
-    await prisma.user.delete({
+    await prisma.product.delete({
       where: {
-        id: userId,
+        id: productId,
       },
     });
 
-    return NextResponse.json({ message: "تم حذف المستخدم" }, { status: 200 });
+    return NextResponse.json({ message: "تم حذف المنتج" }, { status: 200 });
   } catch (error) {
     console.log("🚀 ~ DELETE ~ error:", error);
 
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "حدث خطأ حاول مرة اخري" },
       { status: 500 }
     );
   }
@@ -42,37 +43,37 @@ export async function DELETE(_: NextRequest, { params }: Props) {
 
 export async function PATCH(request: NextRequest, { params }: Props) {
   try {
-    const { userId } = await params;
+    const { productId } = await params;
     const data = await request.json();
 
-    const user = await prisma.user.findUnique({
+    const product = await prisma.product.findUnique({
       where: {
-        id: userId,
+        id: productId,
       },
     });
 
-    if (!user) {
+    if (!product) {
       return NextResponse.json(
-        { message: "المستخدم غير موجود بالفعل" },
+        { message: "المنتج غير موجود بالفعل" },
         { status: 404 }
       );
     }
 
-    const updatedUser = await prisma.user.update({
+    const updatedProduct = await prisma.product.update({
       where: {
-        id: userId,
+        id: productId,
       },
       data: {
         ...data,
       },
     });
 
-    return NextResponse.json(updatedUser, { status: 200 });
+    return NextResponse.json(updatedProduct, { status: 200 });
   } catch (error) {
     console.log("🚀 ~ PATCH ~ error:", error);
 
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "حدث خطأ حاول مرة اخري" },
       { status: 500 }
     );
   }

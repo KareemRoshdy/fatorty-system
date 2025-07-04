@@ -15,7 +15,7 @@ const UsersPage = async () => {
   const users = await getAllUsers();
 
   return (
-    <div>
+    <div className="pb-16">
       <BackLink link="/profile" name="العودة الي الملف الشخصي" />
 
       <DataTable columns={columns} data={users} />

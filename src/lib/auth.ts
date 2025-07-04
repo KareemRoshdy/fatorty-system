@@ -6,7 +6,7 @@ import authConfig from "./auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token }) => {
       if (token?.sub) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.sub },

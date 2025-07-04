@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { BadgeDollarSign, BoxIcon, User } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const ProfileMenu = () => {
   const menuItems = [

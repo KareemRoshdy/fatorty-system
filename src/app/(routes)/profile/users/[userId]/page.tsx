@@ -1,7 +1,6 @@
 import { getUserById } from "@/actions/users.action";
 import BackLink from "@/components/BackLink";
 import UserActions from "./_components/UserActions";
-import EditUserForm from "./_components/EditUserForm";
 import { IconBadge } from "@/components/IconBadge";
 import { LayoutDashboardIcon, Lock } from "lucide-react";
 import EditUsernameForm from "./_components/EditUsernameForm";
@@ -16,15 +15,14 @@ interface EditUserPageProps {
   };
 }
 
-const EditUserPage = async ({ params: { userId } }: EditUserPageProps) => {
+const EditUserPage = async ({ params }: EditUserPageProps) => {
+  const { userId } = await params;
   const user = await getUserById(userId);
 
   if (!user) redirect("/profile/users");
 
-  console.log(user);
-
   return (
-    <div>
+    <div className="pb-16">
       <div className="flex items-center justify-between">
         <BackLink name="العودة الي جدول المستخدمين " link="/profile/users" />
         <UserActions userId={userId} />
