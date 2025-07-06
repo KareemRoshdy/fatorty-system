@@ -1,11 +1,15 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { UserWithInvoices } from "@/types";
 import { User } from "@prisma/client";
 
-export const getAllUsers = async (): Promise<User[]> => {
+export const getAllUsers = async (): Promise<UserWithInvoices[]> => {
   try {
     const users = await prisma.user.findMany({
+      include: {
+        invoices: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -18,11 +22,16 @@ export const getAllUsers = async (): Promise<User[]> => {
 };
 
 // Get User By Id
-export const getUserById = async (userId: string): Promise<User | null> => {
+export const getUserById = async (
+  userId: string
+): Promise<UserWithInvoices | null> => {
   try {
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
+      },
+      include: {
+        invoices: true,
       },
     });
 

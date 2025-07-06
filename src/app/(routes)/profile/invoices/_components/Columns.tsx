@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, PenLine } from "lucide-react";
+import { ArrowUpDown, Eye, MoreHorizontal, PenLine } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,11 +14,11 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { InvoiceWithUser } from "@/types";
+import { Invoice } from "@prisma/client";
 
-export const columns: ColumnDef<InvoiceWithUser>[] = [
+export const columns: ColumnDef<Invoice>[] = [
   {
-    accessorFn: (row) => row.user?.arabicName,
-    id: "arabicName", // لازم نحدد ID هنا علشان نقدر نفلتر
+    accessorKey: "date",
     header: ({ column }) => {
       return (
         <div className="w-fit ml-auto">
@@ -26,14 +26,11 @@ export const columns: ColumnDef<InvoiceWithUser>[] = [
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            الاسم
+            تاريخ الفاتورة
             <ArrowUpDown className="mr-2 h-4 w-4" />
           </Button>
         </div>
       );
-    },
-    cell: ({ row }) => {
-      return <div>{row.getValue("arabicName") || "—"}</div>;
     },
   },
   {
@@ -88,9 +85,39 @@ export const columns: ColumnDef<InvoiceWithUser>[] = [
     },
   },
   {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <div className="w-fit ml-auto">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            الوقت بالتفصيل
+            <ArrowUpDown className="mr-2 h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const createdAt = row.getValue("createdAt") as Date;
+
+      const formattedDate = new Date(createdAt).toLocaleString("ar-EG", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      return <div>{formattedDate}</div>;
+    },
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
-      const { id } = row.original;
+      const { id, userId } = row.original;
 
       return (
         <DropdownMenu>
@@ -102,9 +129,15 @@ export const columns: ColumnDef<InvoiceWithUser>[] = [
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="center">
-            <Link href={`/admin/wallet/${id}`}>
-              <DropdownMenuItem>
+            <Link href={`/profile/invoices/${userId}/edit/${id}`}>
+              <DropdownMenuItem dir="rtl">
                 <PenLine className="h-4 w-4 mr-2" /> تعديل
+              </DropdownMenuItem>
+            </Link>
+
+            <Link href={`/profile/invoices/${userId}/show/${id}`}>
+              <DropdownMenuItem dir="rtl">
+                <Eye className="h-4 w-4 mr-2" /> عرض التفاصيل
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
