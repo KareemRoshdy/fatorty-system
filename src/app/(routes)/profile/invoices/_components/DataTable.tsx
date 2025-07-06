@@ -30,11 +30,13 @@ import Link from "next/link";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  userId: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  userId,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -61,16 +63,14 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-between gap-2 py-4 w-full">
         <Input
           placeholder="فلتر الفواتير..."
-          value={
-            (table.getColumn("arabicName")?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn("date")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("arabicName")?.setFilterValue(event.target.value)
+            table.getColumn("date")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
 
-        <Link href={`/profile/invoices/create`}>
+        <Link href={`/profile/invoices/${userId}/create`}>
           <Button className="w-fit ">
             <PlusCircle className="h-4 w-4" />
             إضافة

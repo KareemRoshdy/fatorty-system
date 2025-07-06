@@ -79,7 +79,7 @@ export const columns: ColumnDef<User>[] = [
 
           <DropdownMenuContent align="center">
             <Link href={`/profile/users/${id}`}>
-              <DropdownMenuItem>
+              <DropdownMenuItem dir="rtl">
                 <PenLine className="h-4 w-4 mr-2" /> تعديل
               </DropdownMenuItem>
             </Link>

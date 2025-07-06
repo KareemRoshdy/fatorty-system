@@ -1,4 +1,4 @@
-import { Invoice } from "@prisma/client";
+import { Invoice, User } from "@prisma/client";
 
 export type InvoiceWithUser = Invoice & {
   user: {
@@ -6,4 +6,8 @@ export type InvoiceWithUser = Invoice & {
     username: string;
     arabicName: string;
   };
+};
+
+export type UserWithInvoices = User & {
+  invoices: Invoice[];
 };
