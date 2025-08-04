@@ -1,4 +1,4 @@
-import { getInvoiceNotPaid, getUserById } from "@/actions/users.action";
+import { getUserById } from "@/actions/users.action";
 import BackLink from "@/components/BackLink";
 import { Button } from "@/components/ui/button";
 import { DollarSignIcon, User } from "lucide-react";
@@ -9,20 +9,14 @@ import { columns } from "../_components/Columns";
 import UserCard from "@/components/UserCard";
 
 interface InvoiceUserPageProps {
-  params: {
+  params: Promise<{
     invoiceId: string;
-  };
+  }>;
 }
 
 const InvoiceUserPage = async ({ params }: InvoiceUserPageProps) => {
   const { invoiceId } = await params;
   const user = await getUserById(invoiceId);
-  const invoicesUnPaid = await getInvoiceNotPaid(user?.id!);
-
-  // console.log(invoicesUnPaid);
-  invoicesUnPaid?.forEach((invoice) => {
-    console.log({ date: invoice.date }, invoice.invoiceProducts);
-  });
   if (!user) redirect("/profile/invoices");
 
   return (

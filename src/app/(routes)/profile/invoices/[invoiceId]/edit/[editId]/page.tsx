@@ -7,10 +7,10 @@ import { getAllProducts } from "@/actions/products.action";
 import Banner from "@/components/Banner";
 
 interface EditInvoicePageProps {
-  params: {
+  params: Promise<{
     invoiceId: string;
     editId: string;
-  };
+  }>;
 }
 
 const EditInvoicePage = async ({ params }: EditInvoicePageProps) => {

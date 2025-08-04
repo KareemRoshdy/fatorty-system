@@ -6,9 +6,9 @@ import PayButton from "./_components/PayButton";
 import PrintInvoiceButton from "../show/[showId]/_components/PrintBtn";
 
 interface InvoicesUnPaidDetailsProps {
-  params: {
+  params: Promise<{
     invoiceId: string;
-  };
+  }>;
 }
 
 const InvoicesUnPaidDetails = async ({

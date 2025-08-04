@@ -13,7 +13,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
     });
 
     return products;
-  } catch (error) {
+  } catch {
     return [];
   }
 };
@@ -32,7 +32,7 @@ export const getProductById = async (
     if (!product) return null;
 
     return product;
-  } catch (error) {
+  } catch {
     return null;
   }
 };

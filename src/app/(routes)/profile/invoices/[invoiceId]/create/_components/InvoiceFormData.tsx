@@ -72,7 +72,7 @@ const InvoiceFormData = ({
       "products",
       selectedProducts.filter((id) => id)
     );
-  }, [selectedProducts]);
+  }, [selectedProducts, form]);
 
   const getTotalPrice = (productIds: string[]) => {
     return productIds.reduce((sum, id) => {
@@ -137,7 +137,7 @@ const InvoiceFormData = ({
         `تم ${response.data.isPaid ? "تأكيد الدفع" : "إلغاء الدفع"}`
       );
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.error("فشل تعديل حالة الدفع");
     } finally {
       setIsToggling(false); // انتهاء اللودينج
@@ -152,7 +152,7 @@ const InvoiceFormData = ({
       await axios.delete(`/api/invoices/${initialData?.id}`);
       toast.success("تم حذف الفاتورة");
       router.push(`/profile/invoices/${userId}`);
-    } catch (error) {
+    } catch {
       toast.error("فشل حذف الفاتورة");
     } finally {
       setDeleting(false); // انتهاء اللودينج
