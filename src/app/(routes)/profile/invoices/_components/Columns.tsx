@@ -13,7 +13,6 @@ import {
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { InvoiceWithUser } from "@/types";
 import { Invoice } from "@prisma/client";
 
 export const columns: ColumnDef<Invoice>[] = [

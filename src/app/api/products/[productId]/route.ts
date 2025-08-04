@@ -2,9 +2,9 @@ import prisma from "@/lib/db";
 import { NextResponse, NextRequest } from "next/server";
 
 interface Props {
-  params: {
+  params: Promise<{
     productId: string;
-  };
+  }>;
 }
 
 export async function DELETE(_: NextRequest, { params }: Props) {

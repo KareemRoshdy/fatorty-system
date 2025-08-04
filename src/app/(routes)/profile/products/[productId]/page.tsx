@@ -8,9 +8,9 @@ import EditProductNameForm from "./_components/EditProductNameForm";
 import EditProductPriceForm from "./_components/EditProductPriceForm";
 
 interface EditProductPageProps {
-  params: {
+  params: Promise<{
     productId: string;
-  };
+  }>;
 }
 
 const EditProductPage = async ({ params }: EditProductPageProps) => {

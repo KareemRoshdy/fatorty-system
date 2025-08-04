@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/db";
 import { InvoiceWithProductItems, UserWithInvoices } from "@/types";
-import { Invoice, InvoiceProduct } from "@prisma/client";
 
 export const getAllUsers = async (): Promise<UserWithInvoices[]> => {
   try {

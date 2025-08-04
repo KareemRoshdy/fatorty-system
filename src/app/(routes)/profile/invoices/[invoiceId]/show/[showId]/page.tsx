@@ -10,10 +10,10 @@ import { redirect } from "next/navigation";
 import PrintInvoiceButton from "./_components/PrintBtn";
 
 interface ShowInvoicePageProps {
-  params: {
+  params: Promise<{
     invoiceId: string;
     showId: string;
-  };
+  }>;
 }
 
 const ShowInvoicePage = async ({ params }: ShowInvoicePageProps) => {

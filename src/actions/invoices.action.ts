@@ -21,7 +21,7 @@ export const getAllInvoices = async (): Promise<InvoiceWithUser[]> => {
     });
 
     return invoices;
-  } catch (error) {
+  } catch {
     return [];
   }
 };
@@ -45,7 +45,7 @@ export const getInvoiceById = async (
     });
 
     return invoice;
-  } catch (error) {
+  } catch {
     return null;
   }
 };

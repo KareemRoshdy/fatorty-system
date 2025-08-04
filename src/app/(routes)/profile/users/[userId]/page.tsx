@@ -10,9 +10,9 @@ import EditPasswordForm from "./_components/EditPasswordForm";
 import EditRoleForm from "./_components/EditRoleForm";
 
 interface EditUserPageProps {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 const EditUserPage = async ({ params }: EditUserPageProps) => {

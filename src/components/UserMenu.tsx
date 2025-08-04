@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
-import LogoutBtn from "./LogoutBtn";
 import { logoutAction } from "@/actions/auth.actions";
 import Link from "next/link";
 
