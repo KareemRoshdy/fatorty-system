@@ -1,4 +1,4 @@
-import { Invoice, User } from "@prisma/client";
+import { Invoice, InvoiceProduct, Product, User } from "@prisma/client";
 
 export type InvoiceWithUser = Invoice & {
   user: {
@@ -10,4 +10,19 @@ export type InvoiceWithUser = Invoice & {
 
 export type UserWithInvoices = User & {
   invoices: Invoice[];
+};
+
+export type InvoiceWithProducts = Invoice & {
+  invoiceProducts: {
+    id: string;
+    productId: string;
+    invoiceId: string;
+    createdAt: Date;
+  }[];
+};
+
+export type InvoiceWithProductItems = Invoice & {
+  invoiceProducts: (InvoiceProduct & {
+    Product: Product;
+  })[];
 };

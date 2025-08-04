@@ -60,22 +60,30 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center justify-between gap-2 py-4 w-full">
+      <div className="flex md:items-center md:justify-between items-end flex-col-reverse md:flex-row gap-5 py-4 w-full">
         <Input
           placeholder="فلتر الفواتير..."
           value={(table.getColumn("date")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("date")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="md:max-w-sm max-w-full"
         />
 
-        <Link href={`/profile/invoices/${userId}/create`}>
-          <Button className="w-fit ">
-            <PlusCircle className="h-4 w-4" />
-            إضافة
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href={`/profile/invoices/${userId}/create`}>
+            <Button className="w-fit ">
+              <PlusCircle className="h-4 w-4" />
+              إضافة
+            </Button>
+          </Link>
+
+          <Link href={`/profile/invoices/${userId}/details`}>
+            <Button className="w-fit bg-green-600 hover:bg-green-700">
+              الفاتورة الكلية
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div className="rounded-md border">

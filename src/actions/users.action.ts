@@ -1,8 +1,8 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { UserWithInvoices } from "@/types";
-import { User } from "@prisma/client";
+import { InvoiceWithProductItems, UserWithInvoices } from "@/types";
+import { Invoice, InvoiceProduct } from "@prisma/client";
 
 export const getAllUsers = async (): Promise<UserWithInvoices[]> => {
   try {
@@ -17,6 +17,7 @@ export const getAllUsers = async (): Promise<UserWithInvoices[]> => {
 
     return users;
   } catch (error) {
+    console.error("Error getting all users:", error);
     return [];
   }
 };
@@ -39,6 +40,32 @@ export const getUserById = async (
 
     return user;
   } catch (error) {
+    console.error("Error getting user by id:", error);
+    return null;
+  }
+};
+
+export const getInvoiceNotPaid = async (
+  userId: string
+): Promise<InvoiceWithProductItems[] | null> => {
+  try {
+    const invoicesNotPaid = await prisma.invoice.findMany({
+      where: {
+        userId,
+        isPaid: false,
+      },
+      include: {
+        invoiceProducts: {
+          include: {
+            Product: true,
+          },
+        },
+      },
+    });
+
+    return invoicesNotPaid;
+  } catch (error) {
+    console.error("Error getting unpaid invoices:", error);
     return null;
   }
 };
