@@ -42,7 +42,8 @@ const LoginForm = () => {
 
         setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         setLoading(false);
       });
   };
