@@ -5,6 +5,7 @@
 
 body {
   font-family: "Cairo";
+  -webkit-tap-highlight-color: transparent;
 }
 /* 
 @theme inline {
