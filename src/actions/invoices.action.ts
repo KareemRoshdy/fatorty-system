@@ -76,7 +76,7 @@ export const getInvoicesByUserId = async (
     });
 
     return invoices;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
