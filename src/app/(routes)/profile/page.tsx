@@ -8,7 +8,9 @@ import {
   Users2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import LogoutBtn from "@/components/LogoutBtn";
+
+import UserProfileSection from "./_components/UserProfileSection";
+import { getInvoicesByUserId } from "@/actions/invoices.action";
 
 const ProfilePage = async () => {
   const session = await auth();
@@ -36,6 +38,8 @@ const ProfilePage = async () => {
     },
   ];
 
+  const userInvoices = await getInvoicesByUserId(session.user.id);
+
   return (
     <div className="w-full">
       <h2 className="md:text-xl font-bold flex items-center gap-1 bg-primary/10 p-2 rounded-md text-primary w-fit">
@@ -60,10 +64,7 @@ const ProfilePage = async () => {
       )}
 
       {session.user.role === "USER" && (
-        <div>
-          بيانات المستخدم
-          <LogoutBtn />
-        </div>
+        <UserProfileSection userInvoices={userInvoices} />
       )}
     </div>
   );

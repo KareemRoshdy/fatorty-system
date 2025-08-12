@@ -21,8 +21,6 @@ export const loginAction = async (data: z.infer<typeof LoginSchema>) => {
       },
     });
 
-    console.log(user);
-
     if (!user || !user.username || !user.password) {
       return { success: false, message: "البيانات غير صالحة" };
     }

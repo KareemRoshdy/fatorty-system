@@ -1,7 +1,11 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { InvoiceWithProducts, InvoiceWithUser } from "@/types";
+import {
+  InvoiceWithProducts,
+  InvoiceWithUser,
+  UserWithInvoicesAndProductDetails,
+} from "@/types";
 
 export const getAllInvoices = async (): Promise<InvoiceWithUser[]> => {
   try {
@@ -46,6 +50,33 @@ export const getInvoiceById = async (
 
     return invoice;
   } catch {
+    return null;
+  }
+};
+
+export const getInvoicesByUserId = async (
+  userId: string
+): Promise<UserWithInvoicesAndProductDetails | null> => {
+  try {
+    const invoices = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        invoices: {
+          include: {
+            invoiceProducts: {
+              include: {
+                Product: true, // لو عايز بيانات المنتج
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return invoices;
+  } catch (error) {
     return null;
   }
 };

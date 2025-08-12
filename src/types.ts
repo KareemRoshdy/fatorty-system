@@ -26,3 +26,11 @@ export type InvoiceWithProductItems = Invoice & {
     Product: Product;
   })[];
 };
+
+export type UserWithInvoicesAndProductDetails = User & {
+  invoices: (Invoice & {
+    invoiceProducts: (InvoiceProduct & {
+      Product: Product;
+    })[];
+  })[];
+};
