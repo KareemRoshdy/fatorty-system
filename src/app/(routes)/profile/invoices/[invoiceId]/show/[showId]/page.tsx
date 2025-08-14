@@ -8,6 +8,7 @@ import { Product } from "@prisma/client";
 import { User } from "lucide-react";
 import { redirect } from "next/navigation";
 import PrintInvoiceButton from "./_components/PrintBtn";
+import { auth } from "@/lib/auth";
 
 interface ShowInvoicePageProps {
   params: Promise<{
@@ -17,6 +18,12 @@ interface ShowInvoicePageProps {
 }
 
 const ShowInvoicePage = async ({ params }: ShowInvoicePageProps) => {
+  const session = await auth();
+
+  if (!session) redirect("/login");
+
+  if (session.user.role !== "ADMIN") return redirect("/profile");
+
   const { invoiceId: userId, showId } = await params;
 
   const user = await getUserById(userId);

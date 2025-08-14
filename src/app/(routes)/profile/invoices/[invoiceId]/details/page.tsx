@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import PayButton from "./_components/PayButton";
 import PrintInvoiceButton from "../show/[showId]/_components/PrintBtn";
+import { auth } from "@/lib/auth";
 
 interface InvoicesUnPaidDetailsProps {
   params: Promise<{
@@ -14,6 +15,12 @@ interface InvoicesUnPaidDetailsProps {
 const InvoicesUnPaidDetails = async ({
   params,
 }: InvoicesUnPaidDetailsProps) => {
+  const session = await auth();
+
+  if (!session) redirect("/login");
+
+  if (session.user.role !== "ADMIN") return redirect("/profile");
+
   const { invoiceId } = await params;
 
   const user = await getUserById(invoiceId);

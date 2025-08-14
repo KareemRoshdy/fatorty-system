@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { DataTable } from "../_components/DataTable";
 import { columns } from "../_components/Columns";
 import UserCard from "@/components/UserCard";
+import { auth } from "@/lib/auth";
 
 interface InvoiceUserPageProps {
   params: Promise<{
@@ -15,6 +16,12 @@ interface InvoiceUserPageProps {
 }
 
 const InvoiceUserPage = async ({ params }: InvoiceUserPageProps) => {
+  const session = await auth();
+
+  if (!session) redirect("/login");
+
+  if (session.user.role !== "ADMIN") return redirect("/profile");
+
   const { invoiceId } = await params;
   const user = await getUserById(invoiceId);
   if (!user) redirect("/profile/invoices");

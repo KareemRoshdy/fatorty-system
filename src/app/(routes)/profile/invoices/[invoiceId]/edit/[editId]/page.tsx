@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import InvoiceFormData from "../../create/_components/InvoiceFormData";
 import { getAllProducts } from "@/actions/products.action";
 import Banner from "@/components/Banner";
+import { auth } from "@/lib/auth";
 
 interface EditInvoicePageProps {
   params: Promise<{
@@ -14,6 +15,12 @@ interface EditInvoicePageProps {
 }
 
 const EditInvoicePage = async ({ params }: EditInvoicePageProps) => {
+  const session = await auth();
+
+  if (!session) redirect("/login");
+
+  if (session.user.role !== "ADMIN") return redirect("/profile");
+
   const { invoiceId: userId, editId } = await params;
 
   const user = await getUserById(userId);

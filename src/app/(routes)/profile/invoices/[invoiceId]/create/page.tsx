@@ -3,12 +3,19 @@ import BackLink from "@/components/BackLink";
 import { redirect } from "next/navigation";
 import InvoiceFormData from "./_components/InvoiceFormData";
 import { getAllProducts } from "@/actions/products.action";
+import { auth } from "@/lib/auth";
 
 interface CreateInvoicePageProps {
   params: Promise<{ invoiceId: string }>;
 }
 
 const CreateInvoicePage = async ({ params }: CreateInvoicePageProps) => {
+  const session = await auth();
+
+  if (!session) redirect("/login");
+
+  if (session.user.role !== "ADMIN") return redirect("/profile");
+
   const { invoiceId: userId } = await params;
   const products = await getAllProducts();
 

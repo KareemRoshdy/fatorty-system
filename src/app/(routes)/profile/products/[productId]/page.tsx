@@ -6,6 +6,7 @@ import { IconBadge } from "@/components/IconBadge";
 import { DollarSign, LayoutDashboardIcon } from "lucide-react";
 import EditProductNameForm from "./_components/EditProductNameForm";
 import EditProductPriceForm from "./_components/EditProductPriceForm";
+import { auth } from "@/lib/auth";
 
 interface EditProductPageProps {
   params: Promise<{
@@ -14,6 +15,12 @@ interface EditProductPageProps {
 }
 
 const EditProductPage = async ({ params }: EditProductPageProps) => {
+  const session = await auth();
+
+  if (!session) redirect("/login");
+
+  if (session.user.role !== "ADMIN") return redirect("/profile");
+
   const { productId } = await params;
 
   const product = await getProductById(productId);
