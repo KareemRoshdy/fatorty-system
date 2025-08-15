@@ -1,5 +1,3 @@
-"use client";
-
 import BackLink from "@/components/BackLink";
 import UserFormData from "./_components/UserFormData";
 import { auth } from "@/lib/auth";
